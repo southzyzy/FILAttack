@@ -35,7 +35,7 @@ MALICIOUS_IP = "93.184.216.34"
 def dns_pkt_filter(pkt):
 	""" Filters the incoming sniffed packet and parse to dns_reply """
 	try:
-		if pkt[IP].dst == MY_IP and pkt.haslayer(DNS) and pkt.haslayer(DNSRR):
+		if pkt[IP].dst == MY_IP and pkt.haslayer(DNS):
 			return pkt[UDP].dport == 53 and pkt[DNS].qr == QUERY
 
 		return False
