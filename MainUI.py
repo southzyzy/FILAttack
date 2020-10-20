@@ -1,3 +1,19 @@
+"""
+Python Version 3.8
+
+Singapore Institute of Technology (SIT)
+Information and Communications Technology (Information Security), BEng (Hons)
+
+ICT-2203 Network Security Assignment 1
+
+Author: @ Tan Zhao Yea / 1802992
+Academic Year: 2020/2021
+Lecturer: Dr. Woo Wing Keong
+Submission Date: 25th October 2020
+
+This script holds the code to perform Telnet Bruteforce.
+"""
+
 import os
 import subprocess
 import cowsay
@@ -8,7 +24,7 @@ from pyfiglet import Figlet, figlet_format
 DHCP_STARVE_LOG = "logs/dhcp_starve.txt"
 DNS_POISON_LOG = "logs/dns_poison.txt"
 
-
+# Error Message Dictionary
 ERRMSG = {
     1: "Value Error! The option input is not provided in the function"
 }
@@ -68,6 +84,7 @@ def main():
 		if choice == 0:
 			os.system("clear")
 
+		# Host Discovery 
 		elif choice == 1:
 			print("\t[+] Enter Network IP Address/Subnet")
 			network_cidr = input("\t[>]: ")
