@@ -4,6 +4,10 @@ import cowsay
 
 from pyfiglet import Figlet, figlet_format
 
+# Log File Configurations
+DHCP_STARVE_LOG = "logs/dhcp_starve.txt"
+DNS_POISON_LOG = "logs/dns_poison.txt"
+
 
 ERRMSG = {
     1: "Value Error! The option input is not provided in the function"
@@ -30,6 +34,11 @@ def options_ui():
 	print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
 
 
+def exit_ui():
+	"""Exit UI """
+	cowsay.cow("Goodbye, Mooo, Mooo, Mooo :)")
+
+
 def main():
 	""" Main Function """
 	display_ui()
@@ -46,6 +55,7 @@ def main():
 			continue
 		
 		except KeyboardInterrupt:
+			exit_ui()
 			break
 
 		else:
@@ -74,19 +84,34 @@ def main():
 			input("Press Enter to return to main menu...")
 			continue
 
+		
 		# DHCP Starvation Attack
 		elif choice == 2:
 			print("\n[*] Running DHCP Starvation Attack")
 			
-			input("Press Enter to return to main menu...")
-			continue
-
-		elif choice == 3:
-			print("\n[*] Running DNS Poisoning Attack")
+			with open(DHCP_STARVE_LOG,"w") as in_file:
+				subprocess.Popen(["python3","dhcp_starvation.py"], stdout=in_file, close_fds=True)
+			
+			print(f"[*] Please refer to {DHCP_STARVE_LOG} for runtime information ...")
 			
 			input("Press Enter to return to main menu...")
 			continue
 
+		
+		# DNS Attack
+		elif choice == 3:
+			print("\n[*] Running DNS Poisoning Attack")
+			with open(DNS_POISON_LOG,"w") as in_file:
+				subprocess.Popen(["python3","dns_poison.py"], stdout=in_file, close_fds=True)
+			print(f"[*] Please refer to {DNS_POISON_LOG} for runtime information ...")
+
+			input("Press Enter to return to main menu...")
+			continue
+
+		# Exit Program
+		elif choice == 5:
+			exit_ui()
+			break
 
 
 if __name__ == '__main__':
