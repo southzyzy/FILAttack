@@ -1,0 +1,93 @@
+import os
+import subprocess
+import cowsay
+
+from pyfiglet import Figlet, figlet_format
+
+
+ERRMSG = {
+    1: "Value Error! The option input is not provided in the function"
+}
+
+
+# Function to display the main menu
+def display_ui():
+	""" Display the Banner Message """
+	print(figlet_format("Welcome To ICT-2203-F17 Attack Script"))
+	cowsay.cow("Do anything you want, just don't get caught :)")
+	cowsay.cow("Moooo")
+
+
+def options_ui():
+	""" Diplay the Options """
+	print("-=-=-=-=-=-=-=-=-=-=-= OPTIONS -=-=-=-=-=-=-=-=-=-=-=-=")
+	print("1. Telnet Bruteforce Attack.")
+	print("2. DHCP Starvation Attack.")
+	print("3. Run Rogue DHCP Server.")
+	print("4. DNS Poisoning.")
+	print("5. Exit.")
+	print("0. Clear Screen (Enter 0 to clear screen)")
+	print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+
+
+def main():
+	""" Main Function """
+	display_ui()
+
+	# Infinite Loop
+	while True:
+		try:			
+			options_ui()
+			print("[*] Which attack would you like to perform?")
+			choice = int(input("[>]: "))
+
+		except ValueError:
+			print(ERRMSG.get(1))
+			continue
+		
+		except KeyboardInterrupt:
+			break
+
+		else:
+			if choice < 0 or choice > 5:
+				print(ERRMSG.get(1))
+				continue
+
+		# Clear the Screen
+		if choice == 0:
+			os.system("clear")
+
+		# Telnet Bruteforce Attack
+		elif choice == 1:
+			print("\t[+] Enter Target IP Address")
+			target_ip = input("\t[>]: ")
+			print("\t[+] Enter Dictionary File")
+			password_file = input("\t[>]:")
+
+			print("\n[*] Running Telnet Bruteforce Attack")
+			
+			try:
+				subprocess.run(["python3","telnet_bruteforce.py",target_ip,password_file])
+			except EOFError:
+				print("[ERR] Telnet Connection Closed")
+			
+			input("Press Enter to return to main menu...")
+			continue
+
+		# DHCP Starvation Attack
+		elif choice == 2:
+			print("\n[*] Running DHCP Starvation Attack")
+			
+			input("Press Enter to return to main menu...")
+			continue
+
+		elif choice == 3:
+			print("\n[*] Running DNS Poisoning Attack")
+			
+			input("Press Enter to return to main menu...")
+			continue
+
+
+
+if __name__ == '__main__':
+	main()
