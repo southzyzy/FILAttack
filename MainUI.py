@@ -24,10 +24,11 @@ def display_ui():
 
 def options_ui():
 	""" Diplay the Options """
+	print("")
 	print("-=-=-=-=-=-=-=-=-=-=-= OPTIONS -=-=-=-=-=-=-=-=-=-=-=-=")
-	print("1. Telnet Bruteforce Attack.")
-	print("2. DHCP Starvation Attack.")
-	print("3. Run Rogue DHCP Server.")
+	print("1. Host Discovery.")
+	print("2. Telnet Bruteforce Attack.")
+	print("3. DHCP Starvation Attack.")
 	print("4. DNS Poisoning.")
 	print("5. Exit.")
 	print("0. Clear Screen (Enter 0 to clear screen)")
@@ -67,8 +68,17 @@ def main():
 		if choice == 0:
 			os.system("clear")
 
-		# Telnet Bruteforce Attack
 		elif choice == 1:
+			print("\t[+] Enter Network IP Address/Subnet")
+			network_cidr = input("\t[>]: ")
+
+			print("\n[*] Running Host Discovery")
+
+			subprocess.run(["python3","host_discovery.py",network_cidr])
+
+
+		# Telnet Bruteforce Attack
+		elif choice == 2:
 			print("\t[+] Enter Target IP Address")
 			target_ip = input("\t[>]: ")
 			print("\t[+] Enter Dictionary File")
@@ -86,7 +96,7 @@ def main():
 
 		
 		# DHCP Starvation Attack
-		elif choice == 2:
+		elif choice == 3:
 			print("\n[*] Running DHCP Starvation Attack")
 			
 			with open(DHCP_STARVE_LOG,"w") as in_file:
@@ -99,7 +109,7 @@ def main():
 
 		
 		# DNS Attack
-		elif choice == 3:
+		elif choice == 4:
 			print("\n[*] Running DNS Poisoning Attack")
 			with open(DNS_POISON_LOG,"w") as in_file:
 				subprocess.Popen(["python3","dns_poison.py"], stdout=in_file, close_fds=True)
