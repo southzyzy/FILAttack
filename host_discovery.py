@@ -58,6 +58,7 @@ def tcp_syn_scan(host, dport):
 
 			print(f"\t[+] {host}:{dport} is open.")
 
+		# Showing Close Ports
 		# elif (ans.getlayer(TCP).flags == CLOSE_PORT):
 			# print(f"{host}:{dport} is closed.")
 
