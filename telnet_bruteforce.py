@@ -31,7 +31,7 @@ def port_is_alive(target, port):
     :return: Boolean True if port is open, False otherwise
     """
     a_socket = socket(AF_INET, SOCK_STREAM)
-    a_socket.settimeout(2)
+    a_socket.settimeout(5)
 
     location = (target, port)
     try:
