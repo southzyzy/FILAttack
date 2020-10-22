@@ -44,9 +44,9 @@ ANS = 1
 SLEEP_DURATION = 2
 
 # Logging Configuration
-LOG_FILE_DIR = os.path.abspath("logs/")
-logging.basicConfig(filename=LOG_FILE_DIR+"dns_poison.txt",
-                    filemode='wb',
+LOG_FILE_DIR = os.path.abspath("logs/dhcp_starve.txt")
+logging.basicConfig(filename=LOG_FILE_DIR,
+                    filemode='w',
                     level=logging.DEBUG,
                     format='%(asctime)s %(message)s', 
                     datefmt='%d/%m/%Y %I:%M:%S %p')
@@ -79,7 +79,7 @@ def craft_dhcp_pkt():
     
     # Infinite Attack
     while True:
-        print("[*] Crafting DHCP Discover Packet")
+        logging.info("[*] Crafting DHCP Discover Packet")
         random_mac = RandMAC()
         packet = DHCPStarvation(iface=IFACE,
                                 hardware_addr=HW,

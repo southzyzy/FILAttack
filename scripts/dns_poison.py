@@ -34,9 +34,9 @@ MALICIOUS_SITE = b"secret.companyxyz.com."
 MALICIOUS_IP = MY_IP
 
 # Logging Configuration
-LOG_FILE_DIR = os.path.abspath("logs/")
-logging.basicConfig(filename=LOG_FILE_DIR+"dns_poison.txt",
-					filemode='wb',
+LOG_FILE_DIR = os.path.abspath("logs/dns_poison.txt")
+logging.basicConfig(filename=LOG_FILE_DIR,
+					filemode='w',
 					level=logging.DEBUG,
 					format='%(asctime)s %(message)s', 
 					datefmt='%d/%m/%Y %I:%M:%S %p')

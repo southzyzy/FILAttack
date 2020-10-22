@@ -22,8 +22,8 @@ import cowsay
 from pyfiglet import Figlet, figlet_format
 
 # Log File Configurations
-DHCP_STARVE_LOG = "../logs/dhcp_starve.txt"
-DNS_POISON_LOG = "../logs/dns_poison.txt"
+DHCP_STARVE_LOG = os.path.abspath("logs/dhcp_starve.txt")
+DNS_POISON_LOG = os.path.abspath("logs/dns_poison.txt")
 
 
 # Error Message Dictionary
@@ -32,7 +32,7 @@ ERRMSG = {
 }
 
 # Rogue DHCP Abs Path
-META_DHCP_SERVER_DIR = os.path.abspath("./meta_dhcp_setup.rc")
+META_DHCP_SERVER_DIR = os.path.abspath("scripts/meta_dhcp_setup.rc")
 
 # Function to display the main menu
 def display_ui():
@@ -121,9 +121,7 @@ def main():
 		elif choice == 3:
 			print("\n[*] Running DHCP Starvation Attack")
 			
-			with open(DHCP_STARVE_LOG,"wb") as in_file:
-				dhcp_proc = subprocess.Popen(["python3","scripts/dhcp_starvation.py"], stdout=in_file, close_fds=True)
-
+			subprocess.Popen(["python3","scripts/dhcp_starvation.py"], close_fds=True)
 			print(f"[*] Please refer to {DHCP_STARVE_LOG} for runtime information ...")
 			
 			input("Press Enter to return to main menu...")
@@ -143,10 +141,9 @@ def main():
 
 		# DNS Attack
 		elif choice == 5:
-			print("\n[*] Running DNS Poisoning Attack")
-			with open(DNS_POISON_LOG,"wb") as in_file:				
-				subprocess.Popen(["python3","scripts/dns_poison.py"], stdout=in_file, close_fds=True)
-
+			print("\n[*] Running DNS Poisoning Attack")			
+			
+			subprocess.Popen(["python3","scripts/dns_poison.py"], close_fds=True)
 			print(f"[*] Please refer to {DNS_POISON_LOG} for runtime information ...")
 
 			input("Press Enter to return to main menu...")
