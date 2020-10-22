@@ -122,8 +122,12 @@ def main():
 			print("\n[*] Running DHCP Starvation Attack")
 			
 			with open(DHCP_STARVE_LOG,"w") as in_file:
-				subprocess.Popen(["python3","dhcp_starvation.py"], stdout=in_file, close_fds=True)
-			
+				dhcp_proc = subprocess.Popen(["python3","dhcp_starvation.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+				
+				for char in iter(lambda: dhcp_proc.stdout.read(1), b''):
+					sys.stdout.write(char)
+					in_file.write(char)
+
 			print(f"[*] Please refer to {DHCP_STARVE_LOG} for runtime information ...")
 			
 			input("Press Enter to return to main menu...")
@@ -144,8 +148,14 @@ def main():
 		# DNS Attack
 		elif choice == 5:
 			print("\n[*] Running DNS Poisoning Attack")
-			with open(DNS_POISON_LOG,"w") as in_file:
-				subprocess.Popen(["python3","dns_poison.py"], stdout=in_file, close_fds=True)
+			with open(DNS_POISON_LOG,"wb") as in_file:				
+				dns_proc = subprocess.Popen(["python3","dns_poison.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+				
+				for char in iter(lambda: dns_proc.stdout.read(1), b''):
+					sys.stdout.write(char)
+					in_file.write(char)
+
+
 			print(f"[*] Please refer to {DNS_POISON_LOG} for runtime information ...")
 
 			input("Press Enter to return to main menu...")
