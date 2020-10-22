@@ -65,11 +65,11 @@ def exit_ui():
 	cowsay.cow("Goodbye, Mooo, Mooo, Mooo :)")
 
 
-def write_thread_output(proc, file_handle):
+def write_thread_output(proc, fname):
 	""" Providing the live update for log files """
-	print(f"\t[+] Writing logs to {DNS_POISON_LOG}")
-	for line in iter(lambda: proc.stdout.read(1), '', b''):
-		file_handle.write(line)
+	with open(fname, "wb") as in_file:
+		for line in iter(lambda: proc.stdout.read(1), b''):
+			in_file.write(line)
 
 
 def main():
@@ -155,13 +155,13 @@ def main():
 		# DNS Attack
 		elif choice == 5:
 			print("\n[*] Running DNS Poisoning Attack")
-			with open(DNS_POISON_LOG,"wb") as in_file:				
-				dns_proc = subprocess.Popen(["python3","scripts/dns_poison.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
-				
-				# Start threading to perform live update of log file
-				t1 = threading.Thread(target=write_thread_output, args=(dns_proc, in_file))
-				t1.start()
-				JOBS.append(t1)
+			# with open(DNS_POISON_LOG,"wb") as in_file:				
+			dns_proc = subprocess.Popen(["python3","scripts/dns_poison.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+			
+			# Start threading to perform live update of log file
+			t1 = threading.Thread(target=write_thread_output, args=(dns_proc, DNS_POISON_LOG))
+			t1.start()
+			JOBS.append(t1)
 
 
 			print(f"[*] Please refer to {DNS_POISON_LOG} for runtime information ...")
