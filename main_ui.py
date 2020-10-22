@@ -22,9 +22,8 @@ import cowsay
 from pyfiglet import Figlet, figlet_format
 
 # Log File Configurations
-DHCP_STARVE_LOG = "logs/dhcp_starve.txt"
-DNS_POISON_LOG = "logs/dns_poison.txt"
-DEV_NULL = "/dev/null"
+DHCP_STARVE_LOG = "../logs/dhcp_starve.txt"
+DNS_POISON_LOG = "../logs/dns_poison.txt"
 
 
 # Error Message Dictionary
