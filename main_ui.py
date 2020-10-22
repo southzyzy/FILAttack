@@ -121,12 +121,8 @@ def main():
 		elif choice == 3:
 			print("\n[*] Running DHCP Starvation Attack")
 			
-			with open(DHCP_STARVE_LOG,"w") as in_file:
+			with open(DHCP_STARVE_LOG,"wb") as in_file:
 				dhcp_proc = subprocess.Popen(["python3","scripts/dhcp_starvation.py"], stdout=in_file, stderr=subprocess.PIPE, close_fds=True)
-				
-				for char in iter(lambda: dhcp_proc.stdout.read(1), b''):
-					sys.stdout.write(char)
-					in_file.write(char)
 
 			print(f"[*] Please refer to {DHCP_STARVE_LOG} for runtime information ...")
 			
@@ -145,16 +141,11 @@ def main():
 			continue
 
 
-		# DNS Attack Test Test
+		# DNS Attack
 		elif choice == 5:
 			print("\n[*] Running DNS Poisoning Attack")
 			with open(DNS_POISON_LOG,"wb") as in_file:				
-				dns_proc = subprocess.Popen(["python3","scripts/dns_poison.py"], stdout=in_file, stderr=subprocess.PIPE, close_fds=True)
-				
-				for char in iter(lambda: dns_proc.stdout.read(1), b''):
-					sys.stdout.write(char)
-					in_file.write(char)
-
+				dns_proc = subprocess.Popen(["python3","scripts/dns_poison.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
 
 			print(f"[*] Please refer to {DNS_POISON_LOG} for runtime information ...")
 
@@ -168,4 +159,8 @@ def main():
 
 
 if __name__ == '__main__':
+	# Make log directory folder if it does not exist
+	if not os.path.exists('logs/'):
+		os.makedirs('logs/')
+
 	main()
