@@ -145,7 +145,7 @@ def main():
 			continue
 
 
-		# DNS Attack
+		# DNS Attack Test Test
 		elif choice == 5:
 			print("\n[*] Running DNS Poisoning Attack")
 			with open(DNS_POISON_LOG,"wb") as in_file:				
