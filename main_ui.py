@@ -81,7 +81,7 @@ def main():
 			break
 
 		else:
-			if choice < 0 or choice > 5:
+			if choice < 0 or choice > 6:
 				print(ERRMSG.get(1))
 				continue
 
