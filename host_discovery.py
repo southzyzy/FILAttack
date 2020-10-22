@@ -76,7 +76,7 @@ def main(host_addr):
 	try:
 		# Perform Ping Scan
 		print("[*] Starting Ping Scan to find Alive Hosts")
-		print(f"\t[+] My IP Address is: {MY_IP}, Skipping scan ...")
+		print(f"\t[+] My IP Address is: {MY_IP}, ignore this IP ...")
 		for ip in list(IPv4Network(host_addr))[1:]:
 			# Restrict ping scan to my own ip address
 			if ip != MY_IP:
