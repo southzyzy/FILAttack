@@ -156,12 +156,12 @@ def main():
 		elif choice == 5:
 			print("\n[*] Running DNS Poisoning Attack")
 			# with open(DNS_POISON_LOG,"wb") as in_file:				
-			dns_proc = subprocess.Popen(["python3","scripts/dns_poison.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+			dns_proc = subprocess.Popen(["python3","scripts/dns_poison.py",">",DNS_POISON_LOG,"2>&1"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
 			
 			# Start threading to perform live update of log file
-			t1 = threading.Thread(target=write_thread_output, args=(dns_proc, DNS_POISON_LOG))
-			t1.start()
-			JOBS.append(t1)
+			# t1 = threading.Thread(target=write_thread_output, args=(dns_proc, DNS_POISON_LOG))
+			# t1.start()
+			# JOBS.append(t1)
 
 
 			print(f"[*] Please refer to {DNS_POISON_LOG} for runtime information ...")
@@ -172,8 +172,8 @@ def main():
 		# Exit Program
 		elif choice == 6:
 			# Join the thread jobs and end the program gracefully
-			for job in JOBS:
-				job.join()
+			# for job in JOBS:
+				# job.join()
 			
 			exit_ui()
 			break
