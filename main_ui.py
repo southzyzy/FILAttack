@@ -123,7 +123,7 @@ def main():
 			print("\n[*] Running DHCP Starvation Attack")
 			
 			with open(DHCP_STARVE_LOG,"wb") as in_file:
-				dhcp_proc = subprocess.Popen(["python3","scripts/dhcp_starvation.py"], stdout=in_file, stderr=subprocess.PIPE, close_fds=True)
+				dhcp_proc = subprocess.Popen(["python3","scripts/dhcp_starvation.py"], stdout=in_file, close_fds=True)
 
 			print(f"[*] Please refer to {DHCP_STARVE_LOG} for runtime information ...")
 			
@@ -146,7 +146,7 @@ def main():
 		elif choice == 5:
 			print("\n[*] Running DNS Poisoning Attack")
 			with open(DNS_POISON_LOG,"wb") as in_file:				
-				subprocess.Popen(["python3","scripts/dns_poison.py"], stdout=in_file, stderr=subprocess.PIPE, close_fds=True)
+				subprocess.Popen(["python3","scripts/dns_poison.py"], stdout=in_file, close_fds=True)
 
 			print(f"[*] Please refer to {DNS_POISON_LOG} for runtime information ...")
 
