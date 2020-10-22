@@ -148,7 +148,7 @@ def main():
 				dns_proc = subprocess.Popen(["python3","scripts/dns_poison.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
 				for line in iter(dns_proc.stdout.readline, b''): 
 					sys.stdout.write(line)
-					f.write(line)
+					in_file.write(line)
 
 			print(f"[*] Please refer to {DNS_POISON_LOG} for runtime information ...")
 
