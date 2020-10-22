@@ -11,7 +11,7 @@ Academic Year: 2020/2021
 Lecturer: Dr. Woo Wing Keong
 Submission Date: 25th October 2020
 
-This script holds the code to perform Telnet Bruteforce.
+This script holds the code to perform Host Discovering in given CIDR Address.
 """
 
 import sys
@@ -31,13 +31,17 @@ RST = 0x04
 CLOSE_PORT = 0x14
 
 
+# Layer 4 Address
+MY_IP = get_if_addr(conf.iface)
+
+
 def icmp_scan(host):
 	""" 
 	Scanning for Alive Host 
 	:param host: Target IP Address of host
 	"""
 
-	ans = sr1(IP(dst=host)/ICMP(), timeout=0.5, verbose=0)
+	ans = sr1(IP(dst=host)/ICMP(), timeout=1, verbose=0)
 	if not ans is None:
 		ALIVE_HOST.append(host)
 
@@ -72,8 +76,11 @@ def main(host_addr):
 	try:
 		# Perform Ping Scan
 		print("[*] Starting Ping Scan to find Alive Hosts")
+		print(f"\t[+] My IP Address is: {MY_IP}, Skipping scan ...")
 		for ip in list(IPv4Network(host_addr))[1:]:
-			icmp_scan(str(ip))
+			# Restrict ping scan to my own ip address
+			if ip != MY_IP:
+				icmp_scan(str(ip))
 		
 		# Perform TCP SYN Scan
 		for alive_ip in ALIVE_HOST:

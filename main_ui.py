@@ -31,6 +31,8 @@ ERRMSG = {
     1: "Value Error! The option input is not provided in the function"
 }
 
+# Rogue DHCP Abs Path
+META_DHCP_SERVER_DIR = os.path.abspath("./meta_dhcp_setup.rc")
 
 # Function to display the main menu
 def display_ui():
@@ -132,8 +134,8 @@ def main():
 		elif choice == 4:
 			print("\n[*] Setting up Rogue DHCP Server")
 			
-			with open(DEV_NULL,"w") as null_file:
-				subprocess.Popen(["msfconsole","-q","-r","meta_dhcp_setup.rc"], stdout=null_file, close_fds=True)
+			print("\n[*] Please open a new terminal and run the following commands:")
+			print(f"\t[+] sudo msfconsole -q -r {META_DHCP_SERVER_DIR}")
 
 			input("Press Enter to return to main menu...")
 			continue
