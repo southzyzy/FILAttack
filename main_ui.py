@@ -135,7 +135,7 @@ def main():
 			print("\n[*] Setting up Rogue DHCP Server")
 			
 			print("\n[*] Please open a new terminal and run the following commands:")
-			print(f"\t[+] sudo msfconsole -q -r {META_DHCP_SERVER_DIR}")
+			print(f"\t[+] sudo msfconsole -q -r '{META_DHCP_SERVER_DIR}'")
 
 			input("Press Enter to return to main menu...")
 			continue
