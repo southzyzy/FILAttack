@@ -18,7 +18,6 @@ This script holds the code to perform various attacks in our Assignment.
 import os
 import subprocess
 import cowsay
-import threading
 
 from pyfiglet import Figlet, figlet_format
 
@@ -27,8 +26,6 @@ DHCP_STARVE_LOG = "logs/dhcp_starve.txt"
 DNS_POISON_LOG = "logs/dns_poison.txt"
 DEV_NULL = "/dev/null"
 
-# Threading Jobs List
-JOBS = []
 
 # Error Message Dictionary
 ERRMSG = {
@@ -63,13 +60,6 @@ def options_ui():
 def exit_ui():
 	"""Exit UI """
 	cowsay.cow("Goodbye, Mooo, Mooo, Mooo :)")
-
-
-def write_thread_output(proc, fname):
-	""" Providing the live update for log files """
-	with open(fname, "wb") as in_file:
-		for line in iter(lambda: proc.stdout.read(1), b''):
-			in_file.write(line)
 
 
 def main():
@@ -155,14 +145,8 @@ def main():
 		# DNS Attack
 		elif choice == 5:
 			print("\n[*] Running DNS Poisoning Attack")
-			# with open(DNS_POISON_LOG,"wb") as in_file:				
-			dns_proc = subprocess.Popen(["python3","scripts/dns_poison.py",">",DNS_POISON_LOG,"2>&1"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
-			
-			# Start threading to perform live update of log file
-			# t1 = threading.Thread(target=write_thread_output, args=(dns_proc, DNS_POISON_LOG))
-			# t1.start()
-			# JOBS.append(t1)
-
+			with open(DNS_POISON_LOG,"wb") as in_file:				
+				subprocess.Popen(["python3","scripts/dns_poison.py"], stdout=in_file, stderr=subprocess.PIPE, close_fds=True)
 
 			print(f"[*] Please refer to {DNS_POISON_LOG} for runtime information ...")
 
@@ -171,10 +155,6 @@ def main():
 
 		# Exit Program
 		elif choice == 6:
-			# Join the thread jobs and end the program gracefully
-			# for job in JOBS:
-				# job.join()
-			
 			exit_ui()
 			break
 
