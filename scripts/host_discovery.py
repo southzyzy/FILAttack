@@ -21,7 +21,28 @@ from scapy.all import *
 
 # Default Configurations
 ALIVE_HOST = []
-PORTS = range(1,51)
+
+# Commonly Used Ports
+PORTS = {
+	"FTP" : [21,22],
+	"SSH" : 22,
+	"Telnet" : 23,
+	"SMTP" : 24,
+	"IPSec" : [50,51],
+	"DNS" : 53,
+	"DHCP" :[67,68],
+	"TFTP" : 69,
+	"HTTP" : [80,8080],
+	"HTTPS" : 443,
+	"POP3" : 110,
+	"NNTP" : 119,
+	"NTP" : 123,
+	"NetBIOS" : [135,136,137,138,139],
+	"IMAP4" : 143,
+	"LDAP" : 389,
+	"RDP" : 3389
+}
+
 
 # TCP Flags
 SYN = 0x02
@@ -46,7 +67,7 @@ def icmp_scan(host):
 		ALIVE_HOST.append(host)
 
 
-def tcp_syn_scan(host, dport):
+def tcp_syn_scan(host, service_name, dport):
 	""" 
 	TCP SYN Scan to scan for open ports 
 	:param host: Target IP Address of host
@@ -60,7 +81,7 @@ def tcp_syn_scan(host, dport):
 			rst_pkt = IP(dst=host)/TCP(sport=sport,dport=dport,flags=RST)
 			send(rst_pkt, verbose=0)
 
-			print(f"\t[+] {host}:{dport} is open.")
+			print(f"\t[+] {host}:{dport} is open. ({service_name})")
 
 		# Showing Close Ports
 		# elif (ans.getlayer(TCP).flags == CLOSE_PORT):
@@ -86,8 +107,12 @@ def main(host_addr):
 		for alive_ip in ALIVE_HOST:
 			print(f"[*] {alive_ip} is alive, scanning for open ports ...")
 			
-			for dport in PORTS:
-				tcp_syn_scan(alive_ip, dport)
+			for service_name, port_no in PORTS.items():
+				if len(port_no) > 1:
+					for p in port_no:
+						tcp_syn_scan(alive_ip, service_name, p)	
+				else:
+					tcp_syn_scan(alive_ip, service_name, port_no)
 
 
 	except ValueError:

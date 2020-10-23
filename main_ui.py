@@ -6,7 +6,10 @@ Information and Communications Technology (Information Security), BEng (Hons)
 
 ICT-2203 Network Security Assignment 1
 
-Author: @ Tan Zhao Yea / 1802992
+Author: @ 
+	Tan Zhao Yea / 1802992
+	Chin Clement / 1802951
+	Gerald Peh Wei Xiang / 1802959
 Academic Year: 2020/2021
 Lecturer: Dr. Woo Wing Keong
 Submission Date: 25th October 2020
