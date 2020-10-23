@@ -108,7 +108,7 @@ def main(host_addr):
 			print(f"[*] {alive_ip} is alive, scanning for open ports ...")
 			
 			for service_name, port_no in PORTS.items():
-				if len(port_no) > 1:
+				if isinstance(port_no, list):
 					for p in port_no:
 						tcp_syn_scan(alive_ip, service_name, p)	
 				else:
