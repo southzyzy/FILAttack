@@ -11,7 +11,7 @@ Author: @
 	Chin Clement / 1802951
 	Gerald Peh Wei Xiang / 1802959
 Academic Year: 2020/2021
-Lecturer: Dr. Woo Wing Keong
+Lecturer: Woo Wing Keong
 Submission Date: 25th October 2020
 
 This script holds the code to perform various attacks in our Assignment. 

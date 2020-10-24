@@ -8,7 +8,7 @@ ICT-2203 Network Security Assignment 1
 
 Author: @ Tan Zhao Yea / 1802992
 Academic Year: 2020/2021
-Lecturer: Dr. Woo Wing Keong
+Lecturer: Woo Wing Keong
 Submission Date: 25th October 2020
 
 This script holds the code to perform Host Discovering in given CIDR Address.
