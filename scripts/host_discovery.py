@@ -24,7 +24,7 @@ ALIVE_HOST = []
 
 # Commonly Used Ports
 PORTS = {
-	"FTP" : [21,22],
+	"FTP" : 21,
 	"SSH" : 22,
 	"Telnet" : 23,
 	"SMTP" : 24,
